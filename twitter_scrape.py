@@ -4,6 +4,8 @@ import lxml
 from bs4 import BeautifulSoup
 import pandas as pd
 import time
+from dotenv import load_dotenv
+import os
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -13,10 +15,12 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 
 
+
+
 #set up chromedriver
 MY_PATH = "./chromedriver"
 driver = webdriver.Chrome(executable_path=MY_PATH)
-wait = WebDriverWait(driver, 30)    # determines maximum wait time for an element to load
+wait = WebDriverWait(driver, 60)    # determines maximum wait time for an element to load
 
 
 #####STEP 1. LOGIN
@@ -27,10 +31,11 @@ print('webpage accessed')
 time.sleep(15)
 
 
-# twitter login login w/ email and password
-email = 'epurpur@gmail.com'
-password = 'battlebot'
-phoneNumber = '8287737140'
+#read .env file environment variables
+load_dotenv()
+email = os.getenv("email")
+password = os.getenv("password")
+phoneNumber = os.getenv("phoneNumber")
 
 print('writing email')
 login = driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input')
