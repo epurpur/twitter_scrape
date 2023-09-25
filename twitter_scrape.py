@@ -79,10 +79,30 @@ print()
 
 ######STEP 2. SEARCH
 
+
+print('clicking search bar')
 search_box = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search']")))
+search_box.click()
+print('sending keys #BostonStrong')
 search_box.send_keys('#BostonStrong')
 #click enter button
+print('press enter key')
 search_box.send_keys(Keys.RETURN)
+
+
+print('Waiting for page to render')
+element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'css-901oao')))
+
+mess = []
+
+# gathering HTML
+print('Gathering HTML')
+soup = BeautifulSoup(driver.page_source, 'lxml')
+
+for item in soup.find_all('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0'):
+    mess.append(item)
+    
+    
 
 
 
