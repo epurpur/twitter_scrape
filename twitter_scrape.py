@@ -79,7 +79,7 @@ print()
 
 ######STEP 2. SEARCH
 
-
+time.sleep(5)
 print('clicking search bar')
 search_box = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search']")))
 search_box.click()
@@ -96,46 +96,91 @@ element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'css-901oao'
 print('Extra wait time')
 time.sleep(15)
 
+#click 'advanced search'
+print('click advanced search')
+advanced_search = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Advanced search']")))
+advanced_search.click()
+
+#click 'these hashtags'
+print('add #BostonStrong hashtag')
+these_hashtags = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@name='theseHashtags']")))
+these_hashtags.click()
+these_hashtags.send_keys('#BostonStrong')
+
+#scroll down popup box
+print('scrolling halfway down popup box')
+popup_window_handle = driver.window_handles[-1]
+print('popup window handle', popup_window_handle)
+driver.switch_to.window(popup_window_handle)
+popup_window_handle.scrollTo(0, 500)
 
 
-######Step 3. Gather HTML
 
-# gathering HTML
-print('Gathering HTML')
-soup = BeautifulSoup(driver.page_source, 'lxml')
+#######################THOUGHTS- FIND SOME OTHER MORE EASILY ACCESSIBLE POPUP WINDOW TO SCROLL TO IN TEST CODE.
+####################### THIS METHOD IS SLOW AND TIME CONSUMING
 
-mess1 = []
 
-for item in soup.find_all('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0'):
-    mess1.append(item.text)
+#click 'english language from dropdown box'
+print('choosing English language')
+language_box = wait.until(EC.element_to_be_clickable((By.ID, 'SELECTOR_1')))
+language_box.click()
+try:
+    print('pass 1')
+    language_box.select_by_visible_text("English")
+except Exception:
+    print('Error!')
+    print('pass 2')
+    language_box.selectByIndex(12)
     
     
-# scroll down page
-print()
-print('Scrolling Page to bottom')
-print()
+
+
+
+# #click 'latest' button
+
+
+
+# ######Step 3. Gather HTML
+
+# # gathering HTML
+# print('Gathering HTML')
+# soup = BeautifulSoup(driver.page_source, 'lxml')
+
+# mess1 = []
+
+# for item in soup.find_all('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0'):
+#     mess1.append(item.text)
+    
+    
+# # scroll down page
+# print()
+# print('Scrolling Page to bottom')
+# print()
     
 
-full_page_height = driver.execute_script('return document.body.scrollHeight')
-print(f'Page height: {full_page_height}')
-#height of window is 598 pixels. need to divide full page height by 598
-scroll_distance = 598
-numberOfScrolls = int(full_page_height / scroll_distance)
+# full_page_height = driver.execute_script('return document.body.scrollHeight')
+# print(f'Page height: {full_page_height}')
+# #height of window is 598 pixels. need to divide full page height by 598
+# scroll_distance = 598
+# numberOfScrolls = int(full_page_height / scroll_distance)
+# print(f"Number of Scrolls: {numberOfScrolls}")
 
-for i in range(numberOfScrolls):
-    driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
+
+# for i in range(numberOfScrolls):
+#     driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
+#     time.sleep(2)
     
-time.sleep(10)
+# time.sleep(10)
 
    
 
-print('Gathering HTML of full page')
-soup = BeautifulSoup(driver.page_source, 'lxml')
+# print('Gathering HTML of full page')
+# soup = BeautifulSoup(driver.page_source, 'lxml')
 
-full_mess = []
+# full_mess = []
 
-for item in soup.find_all('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0'):
-    full_mess.append(item.text)
+# for item in soup.find_all('span', class_='css-901oao css-16my406 r-poiln3 r-bcqeeo r-qvutc0'):
+#     full_mess.append(item.text)
 
 
 driver.quit()

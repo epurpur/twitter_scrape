@@ -30,18 +30,19 @@ print('sleeping')
 time.sleep(5)
 
 page_height = driver.execute_script('return document.body.scrollHeight')
-print(f'page_height = {page_height}')
+print(f"page height: {page_height}")
 
-print('Scrolling')
 
-scroll_distance = 598 # this is measured in pixels
-driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
+#height of window is 598 pixels. need to divide full page height by 598
+scroll_distance = 598
+numberOfScrolls = int(page_height / scroll_distance)
+print(f"Number of scrolls: {numberOfScrolls}")
 
-time.sleep(5)
 
-print('Scrolling')
-
-scroll_distance = 598 # this is measured in pixels
-driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
-
+for i in range(numberOfScrolls):
+    driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
+    time.sleep(2)
+    
+    
+time.sleep(10)
 driver.quit()
