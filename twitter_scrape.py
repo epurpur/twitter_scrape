@@ -6,6 +6,8 @@ import pandas as pd
 import time
 from dotenv import load_dotenv
 import os
+import re
+from datetime import datetime
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -95,24 +97,75 @@ element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'css-901oao'
 
 print('Extra wait time')
 time.sleep(15)
+######################################################
+print('gathering html')
+html = driver.page_source
 
-#click 'advanced search'
-print('click advanced search')
-advanced_search = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Advanced search']")))
-advanced_search.click()
+soup = BeautifulSoup(html, 'lxml')
 
-#click 'these hashtags'
-print('add #BostonStrong hashtag')
-these_hashtags = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@name='theseHashtags']")))
-these_hashtags.click()
-these_hashtags.send_keys('#BostonStrong')
+print('extracting tweets')
 
-#scroll down popup box
-print('scrolling halfway down popup box')
-popup_window_handle = driver.window_handles[-1]
-print('popup window handle', popup_window_handle)
-driver.switch_to.window(popup_window_handle)
-popup_window_handle.scrollTo(0, 500)
+final_results = []
+
+# gather twitter handles
+div_tags = soup.find_all('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
+
+for div in div_tags:
+    usernames = []
+    twitter_handles = []
+    date_of_tweet = []
+    
+    # Extract the text content of the div
+    div_text = div.get_text()
+    
+    # Find and extract Twitter usernames
+    for match in re.finditer(r'@(\w+)', div_text):
+        twitter_handles.append(match.group(0))
+        
+    # Find and extract Twitter usernames
+    for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
+        usernames.append(match.group(0))
+        
+    # Find and extract date of tweet
+    pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
+    for match in re.finditer(pattern, div_text):
+        date_of_tweet = match.group(0)
+        
+    for i, result in enumerate(date_of_tweet):
+        if re.match(pattern, result):
+            # Get the current date in the desired format "Nov 3"
+            current_date = datetime.now().strftime("%b %d")
+            current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
+            date_of_tweet[i] = current_date
+            print(date_of_tweet)
+            
+    final_results.append([usernames, twitter_handles, date_of_tweet])
+    
+
+
+# get all HTML from current page
+
+#########STOP HERE Temporarily
+######################################################
+
+
+# #click 'advanced search'
+# print('click advanced search')
+# advanced_search = wait.until(EC.element_to_be_clickable((By.XPATH, "//span[text()='Advanced search']")))
+# advanced_search.click()
+
+# #click 'these hashtags'
+# print('add #BostonStrong hashtag')
+# these_hashtags = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@name='theseHashtags']")))
+# these_hashtags.click()
+# these_hashtags.send_keys('#BostonStrong')
+
+# #scroll down popup box
+# print('scrolling halfway down popup box')
+# popup_window_handle = driver.window_handles[-1]
+# print('popup window handle', popup_window_handle)
+# driver.switch_to.window(popup_window_handle)
+# popup_window_handle.scrollTo(0, 500)
 
 
 
@@ -120,19 +173,27 @@ popup_window_handle.scrollTo(0, 500)
 ####################### THIS METHOD IS SLOW AND TIME CONSUMING
 
 
-#click 'english language from dropdown box'
-print('choosing English language')
-language_box = wait.until(EC.element_to_be_clickable((By.ID, 'SELECTOR_1')))
-language_box.click()
-try:
-    print('pass 1')
-    language_box.select_by_visible_text("English")
-except Exception:
-    print('Error!')
-    print('pass 2')
-    language_box.selectByIndex(12)
+# #click 'english language from dropdown box'
+# print('choosing English language')
+# language_box = wait.until(EC.element_to_be_clickable((By.ID, 'SELECTOR_1')))
+# language_box.click()
+# try:
+#     print('pass 1')
+#     language_box.select_by_visible_text("English")
+# except Exception:
+#     print('Error!')
+#     print('pass 2')
+#     language_box.selectByIndex(12)
     
     
+
+
+
+
+
+
+
+
 
 
 
@@ -142,9 +203,9 @@ except Exception:
 
 # ######Step 3. Gather HTML
 
-# # gathering HTML
-# print('Gathering HTML')
-# soup = BeautifulSoup(driver.page_source, 'lxml')
+# gathering HTML
+print('Gathering HTML')
+soup = BeautifulSoup(driver.page_source, 'lxml')
 
 # mess1 = []
 

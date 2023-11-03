@@ -1,6 +1,4 @@
 
-
-
 import requests
 import lxml
 from bs4 import BeautifulSoup
@@ -8,12 +6,14 @@ import pandas as pd
 import time
 from dotenv import load_dotenv
 import os
+
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+import re
 
 
 #set up chromedriver
@@ -22,27 +22,24 @@ driver = webdriver.Chrome(executable_path=MY_PATH)
 wait = WebDriverWait(driver, 60)    # determines maximum wait time for an element to load
 
 
-
-
+print('going to clipping chains')
 driver.get('https://clippingchains.com/')
 
-print('sleeping')
-time.sleep(5)
+print('clicking on getting started')
+#click on 'getting started'
+wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="menu-item-7360"]'))).click()
 
-page_height = driver.execute_script('return document.body.scrollHeight')
-print(f"page height: {page_height}")
-
-
-#height of window is 598 pixels. need to divide full page height by 598
-scroll_distance = 598
-numberOfScrolls = int(page_height / scroll_distance)
-print(f"Number of scrolls: {numberOfScrolls}")
-
-
-for i in range(numberOfScrolls):
-    driver.execute_script(f'window.scrollBy(0, {scroll_distance});')
-    time.sleep(2)
-    
-    
+print('waiting')
 time.sleep(10)
-driver.quit()
+
+print('gathering html')
+html = driver.page_source
+
+soup = BeautifulSoup(html, 'lxml')
+
+
+print('extracting links')
+links = soup.find_all('a')
+for link in links:
+    href = link.get('href')
+    print(href)
