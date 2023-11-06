@@ -137,13 +137,26 @@ for div in div_tags:
             current_date = datetime.now().strftime("%b %d")
             current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
             date_of_tweet[i] = current_date
-            print(date_of_tweet)
+            #print(date_of_tweet)
             
     final_results.append([usernames, twitter_handles, date_of_tweet])
     
+#find the tweet content within those div tags
+
+tweets = soup.find_all('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
+for tweet in tweets:
+    #find a tags (links to images) within those divs
+    span_tags = tweet.find_all('span')
+    for s in span_tags:
+        print(s.contents.get_text())
+    print()
+    print()
+    print()
 
 
-# get all HTML from current page
+
+
+
 
 #########STOP HERE Temporarily
 ######################################################
