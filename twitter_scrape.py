@@ -111,6 +111,7 @@ print('extracting tweets')
 
 
 # grab this tag instead?? div class="css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu
+all_tweets = soup.find_all('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu')
 
 
 
@@ -120,42 +121,41 @@ print('extracting tweets')
 
 
 
+# final_results = []
 
-final_results = []
+# # gather twitter handles
+# div_tags = soup.find_all('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
 
-# gather twitter handles
-div_tags = soup.find_all('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
-
-for div in div_tags:
-    usernames = []
-    twitter_handles = []
-    date_of_tweet = []
+# for div in div_tags:
+#     usernames = []
+#     twitter_handles = []
+#     date_of_tweet = []
     
-    # Extract the text content of the div
-    div_text = div.get_text()
+#     # Extract the text content of the div
+#     div_text = div.get_text()
     
-    # Find and extract Twitter usernames
-    for match in re.finditer(r'@(\w+)', div_text):
-        twitter_handles.append(match.group(0))
+#     # Find and extract Twitter usernames
+#     for match in re.finditer(r'@(\w+)', div_text):
+#         twitter_handles.append(match.group(0))
         
-    # Find and extract Twitter usernames
-    for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
-        usernames.append(match.group(0))
+#     # Find and extract Twitter usernames
+#     for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
+#         usernames.append(match.group(0))
         
-    # Find and extract date of tweet
-    pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
-    for match in re.finditer(pattern, div_text):
-        date_of_tweet = match.group(0)
+#     # Find and extract date of tweet
+#     pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
+#     for match in re.finditer(pattern, div_text):
+#         date_of_tweet = match.group(0)
         
-    for i, result in enumerate(date_of_tweet):
-        if re.match(pattern, result):
-            # Get the current date in the desired format "Nov 3"
-            current_date = datetime.now().strftime("%b %d")
-            current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
-            date_of_tweet[i] = current_date
-            #print(date_of_tweet)
+#     for i, result in enumerate(date_of_tweet):
+#         if re.match(pattern, result):
+#             # Get the current date in the desired format "Nov 3"
+#             current_date = datetime.now().strftime("%b %d")
+#             current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
+#             date_of_tweet[i] = current_date
+#             #print(date_of_tweet)
             
-    final_results.append([usernames, twitter_handles, date_of_tweet])
+#     final_results.append([usernames, twitter_handles, date_of_tweet])
     
     
     
@@ -163,35 +163,49 @@ for div in div_tags:
     
     
     
-#find the tweet content within those div tags
-tweet_contents = []
-tweets = soup.find_all('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
-span_tags = []
-for tweet in tweets:
-    spans = tweet.find_all('span')
-    span_tags.append(spans)
+# #find the tweet content within those div tags
+# tweet_contents = []
+# tweets = soup.find_all('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
+# span_tags = []
+# for tweet in tweets:
+#     spans = tweet.find_all('span')
+#     span_tags.append(spans)
 
 
-for span in span_tags:
-    content = []
-    for i in span:
-        for x in i:
-            if type(x) == Tag:
-                content.append(x.get_text())
-            else:
-                content.append(x)
-    tweet_contents.append(content)
+# for span in span_tags:
+#     content = []
+#     for i in span:
+#         for x in i:
+#             if type(x) == Tag:
+#                 content.append(x.get_text())
+#             else:
+#                 content.append(x)
+#     tweet_contents.append(content)
 
                     
-    print()
-    print()
-    print('~~~~~~~~~~~~')
-    ##########################################################################
-    ##### start here, why are span_contents throwing off the contents of the tweet?
-    ##########################################################################
+#     print()
+#     print()
+#     print('~~~~~~~~~~~~')
+#     ##########################################################################
+#     ##### start here, why are span_contents throwing off the contents of the tweet?
+#     ##########################################################################
 
 
-tweet_contents = [' '.join(inner_list) for inner_list in tweet_contents]
+# tweet_contents = [' '.join(inner_list) for inner_list in tweet_contents]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
