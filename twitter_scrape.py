@@ -1,13 +1,15 @@
 
 import requests
 import lxml
-from bs4 import BeautifulSoup
 import pandas as pd
 import time
 from dotenv import load_dotenv
 import os
 import re
 from datetime import datetime
+
+from bs4 import BeautifulSoup
+from bs4.element import Tag
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
@@ -105,6 +107,20 @@ soup = BeautifulSoup(html, 'lxml')
 
 print('extracting tweets')
 
+
+
+
+# grab this tag instead?? div class="css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu
+
+
+
+
+
+
+
+
+
+
 final_results = []
 
 # gather twitter handles
@@ -141,19 +157,41 @@ for div in div_tags:
             
     final_results.append([usernames, twitter_handles, date_of_tweet])
     
+    
+    
+    
+    
+    
+    
 #find the tweet content within those div tags
-
+tweet_contents = []
 tweets = soup.find_all('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
+span_tags = []
 for tweet in tweets:
-    #find a tags (links to images) within those divs
-    span_tags = tweet.find_all('span')
-    for s in span_tags:
-        print(s.contents.get_text())
-    print()
-    print()
-    print()
+    spans = tweet.find_all('span')
+    span_tags.append(spans)
 
 
+for span in span_tags:
+    content = []
+    for i in span:
+        for x in i:
+            if type(x) == Tag:
+                content.append(x.get_text())
+            else:
+                content.append(x)
+    tweet_contents.append(content)
+
+                    
+    print()
+    print()
+    print('~~~~~~~~~~~~')
+    ##########################################################################
+    ##### start here, why are span_contents throwing off the contents of the tweet?
+    ##########################################################################
+
+
+tweet_contents = [' '.join(inner_list) for inner_list in tweet_contents]
 
 
 
