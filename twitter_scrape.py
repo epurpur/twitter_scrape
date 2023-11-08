@@ -110,8 +110,98 @@ print('extracting tweets')
 
 
 
-# grab this tag instead?? div class="css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu
+# GATHER HTML
 all_tweets = soup.find_all('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu')
+
+#this holds all info gathered from each tweet on the page
+final_results = []
+
+for tweet in all_tweets:
+    
+    twitter_handle = ''
+    username = ''
+    date_of_tweet = []
+    content = ''
+    
+    # gets username, twitter handle, date of tweet
+    first_nested_div = tweet.find('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
+    if first_nested_div:
+        # if these div tags are found
+        for div in first_nested_div:
+            
+            #extract text content of the div
+            div_text = div.get_text()
+            
+            #find and extract twitter handle
+            for match in re.finditer(r'@(\w+)', div_text):
+                twitter_handle += match.group(0)
+                
+            # Find and extract user's name
+            for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
+                username += match.group(0)
+                
+            # Find and extract date of tweet
+            pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
+            for match in re.finditer(pattern, div_text):
+                date_of_tweet = match.group(0)
+                
+            for i, result in enumerate(date_of_tweet):
+                if re.match(pattern, result):
+                    # Get the current date in the desired format "Nov 3"
+                    current_date = datetime.now().strftime("%b %d")
+                    current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
+                    date_of_tweet[i] = current_date            
+            
+
+    else:
+        # if these div tags are not found
+        twitter_handle = 'No twitter handle'
+        username = 'No Name'
+        date_of_tweet = 'No Date'
+    
+    
+    # gets content of tweet including hashtags
+    second_nested_div = tweet.find('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
+    if second_nested_div:
+        # if these div tags are found
+        tweet_contents = []
+        
+        for div in second_nested_div:
+            for item in div:
+                # if contains span
+                if item.name == 'span':
+                    tweet_contents.append(item.get_text())
+                # if contains a
+                elif item.name == 'a':
+                    tweet_contents.append(item.get_text())
+                # if no other tag
+                else:
+                    tweet_contents.append(item)
+                
+        #flatten tweet_contents into one long string
+        tweet_contents = ''.join(tweet_contents)
+        content = tweet_contents
+        
+        
+    else:
+        # if these div tags are not found
+        tweet_contents = 'No Tweet Contents'
+        content = tweet_contents
+        
+    
+    # handle missing or empty data such as username, date of tweet, or content
+    if len(username) == 0:
+        username = 'No Name'
+        
+    if len(date_of_tweet) == 0:
+        date_of_tweet = 'No Date'
+    
+    final_results.append([twitter_handle, username, date_of_tweet, content])
+
+    print()
+    print()
+    print()
+
 
 
 
@@ -123,43 +213,97 @@ all_tweets = soup.find_all('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777
 
 # final_results = []
 
-# # gather twitter handles
-# div_tags = soup.find_all('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
+# for tweet in all_tweets:
 
-# for div in div_tags:
-#     usernames = []
-#     twitter_handles = []
-#     date_of_tweet = []
+#     tweet_info = []    
+
+#     #1: gather usernames, twitter handles, date of tweet
+#     div_tags = soup.find_all('div', class_='css-1dbjc4n r-k4xj1c r-18u37iz r-1wtj0ep')
     
-#     # Extract the text content of the div
-#     div_text = div.get_text()
     
-#     # Find and extract Twitter usernames
-#     for match in re.finditer(r'@(\w+)', div_text):
-#         twitter_handles.append(match.group(0))
+#     for div in div_tags:
         
-#     # Find and extract Twitter usernames
-#     for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
-#         usernames.append(match.group(0))
+#         username = ''
+#         twitter_handle = ''
+#         date_of_tweet = []
         
-#     # Find and extract date of tweet
-#     pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
-#     for match in re.finditer(pattern, div_text):
-#         date_of_tweet = match.group(0)
+#         # Extract the text content of the div
+#         div_text = div.get_text()
         
-#     for i, result in enumerate(date_of_tweet):
-#         if re.match(pattern, result):
-#             # Get the current date in the desired format "Nov 3"
-#             current_date = datetime.now().strftime("%b %d")
-#             current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
-#             date_of_tweet[i] = current_date
-#             #print(date_of_tweet)
+#         # Find and extract Twitter usernames
+#         for match in re.finditer(r'@(\w+)', div_text):
+#             # print(match.group(0))
+#             username += match.group(0)
             
-#     final_results.append([usernames, twitter_handles, date_of_tweet])
+#         # Find and extract Twitter usernames
+#         for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
+#             # print(match.group(0))
+#             twitter_handle += match.group(0)
+            
+#         # Find and extract date of tweet
+#         pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
+#         for match in re.finditer(pattern, div_text):
+#             # print(match.group(0))
+#             date_of_tweet = match.group(0)
+            
+#         for i, result in enumerate(date_of_tweet):
+#             if re.match(pattern, result):
+#                 # Get the current date in the desired format "Nov 3"
+#                 current_date = datetime.now().strftime("%b %d")
+#                 current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
+#                 date_of_tweet[i] = current_date
+                
+#         tweet_info.append([username, twitter_handle, date_of_tweet])
+        
+    
+#     #2: gather tweet content
+#     tweet_contents = soup.find_all('div', class_='css-901oao css-cens5h r-18jsvk2 r-37j5jr r-a023e6 r-16dba41 r-rjixqe r-bcqeeo r-bnwqim r-qvutc0')
+    
+
+        
+#     span_tags = []
+#     for item in tweet_contents:
+#         spans = item.find_all('span')
+#         span_tags.append(spans)
+        
+#     for span in span_tags:
+#         content = []
+#         for i in span:
+#             for x in i:
+#                 if type(x) == Tag:
+#                     content.append(x.get_text())
+#                 else:
+#                     content.append(x)
+                    
+
+#         tweet_info.append(content)
+    
+        
+        
+#     final_results.append(tweet_info)
     
     
+# final_results = final_results[0]
     
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     
@@ -269,8 +413,8 @@ all_tweets = soup.find_all('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777
 # ######Step 3. Gather HTML
 
 # gathering HTML
-print('Gathering HTML')
-soup = BeautifulSoup(driver.page_source, 'lxml')
+# print('Gathering HTML')
+# soup = BeautifulSoup(driver.page_source, 'lxml')
 
 # mess1 = []
 
