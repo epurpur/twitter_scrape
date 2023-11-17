@@ -17,6 +17,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 
 
 
@@ -99,28 +100,28 @@ element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'css-901oao'
 
 print('Extra wait time')
 time.sleep(15)
-######################################################
-print('gathering html')
-html = driver.page_source
 
-soup = BeautifulSoup(html, 'lxml')
+print('clicking advanced search box')
+advanced_search_box = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.css-1dbjc4n[data-testid="searchFiltersAdvancedSearch"]')))
+advanced_search_box.click()
 
+############START HERE
+# print('Clicking hashtags box')
+# hashtags_box = wait.until(EC.presence_of_all_elements_located(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[2]/div[5]/div/label/div/div[2]/div/input'))
+# hashtags_box.click()
+# hashtags_box.send_keys('#BostonStrong')
 
-
-
-#click 'english language from dropdown box'
-print('choosing English language')
-language_box = wait.until(EC.element_to_be_clickable((By.ID, 'SELECTOR_1')))
-language_box.click()
-try:
-    print('pass 1')
-    language_box.select_by_visible_text("English")
-except Exception:
-    print('Error!')
-    print('pass 2')
-    language_box.selectByIndex(12)
+# print('clicking language box')
+# language_box = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_1"]')))
+# language_box.click()
+# print('Choosing English')
+# select = Select(language_box)
+# select.select_by_index(11)
 
 
+# print("Moving on to Dates")
+# dates = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_2"]')))
+# dates.click()
 
 
 
@@ -132,6 +133,10 @@ except Exception:
 
 # #######STEP . GATHER HTML
 # print('extracting info from tweets')
+# html = driver.page_source
+
+# soup = BeautifulSoup(html, 'lxml')
+
 # all_tweets = soup.find_all('div', class_='css-1dbjc4n r-1iusvr4 r-16y2uox r-1777fci r-kzbkwu')
 
 # #this holds all info gathered from each tweet on the page
@@ -272,7 +277,7 @@ except Exception:
 
 
 # exit web driver
-driver.quit()
+# driver.quit()
 
 
 
