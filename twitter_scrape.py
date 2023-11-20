@@ -105,25 +105,52 @@ print('clicking advanced search box')
 advanced_search_box = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.css-1dbjc4n[data-testid="searchFiltersAdvancedSearch"]')))
 advanced_search_box.click()
 
-############START HERE
-# print('Clicking hashtags box')
-# hashtags_box = wait.until(EC.presence_of_all_elements_located(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div/div/div[2]/div/div[2]/div[5]/div/label/div/div[2]/div/input'))
-# hashtags_box.click()
-# hashtags_box.send_keys('#BostonStrong')
+time.sleep(10)
 
-# print('clicking language box')
-# language_box = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_1"]')))
-# language_box.click()
-# print('Choosing English')
-# select = Select(language_box)
-# select.select_by_index(11)
 
+print('clicking language box')
+language_box = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_1"]')))
+language_box.click()
+print('Choosing English')
+select = Select(language_box)
+select.select_by_index(11)
+
+print('Clicking hashtags box')
+hashtags_box = wait.until(EC.presence_of_all_elements_located((By.XPATH, '//input[@name="theseHashtags"]')))
+hashtags_box[0].click()  # presence_of_all_elements_located returns a list, so you need to access the first element
+hashtags_box[0].send_keys('#BostonStrong')
 
 # print("Moving on to Dates")
-# dates = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_2"]')))
-# dates.click()
+# #########THIS WORKS
+# print('dates from month')
+# dates_from_month = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_2"]')))
+# dates_from_month.click()
+# select_from_month = Select(dates_from_month)
+# select_from_month.select_by_index(3)   #select March?
 
 
+
+print('dates from day')
+dates_from_day = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_10"]')))
+print('1')
+dates_from_day.click()
+print('2')
+select_from_day = Select(dates_from_day)
+print('3')
+select_from_day.select_by_index(1)  #select 1st of the month
+print('4')
+
+########### doesn't work
+# print('dates from year')
+# dates_from_year = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '#SELECTOR_11')))
+# dates_from_year.click()
+# select_from_year = Select(dates_from_year)
+# try:
+#     print('trying by index')
+#     select_from_year.select_by_index(1)  #select 2023
+# except Exception:
+#     print('trying by value')
+#     select_from_year.select_by_value('2023')
 
 
 
