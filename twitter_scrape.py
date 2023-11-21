@@ -18,6 +18,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
+from selenium.common.exceptions import TimeoutException
 
 
 
@@ -96,13 +97,24 @@ search_box.send_keys(Keys.RETURN)
 
 
 print('Waiting for page to render')
-element = wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'css-901oao')))
+element = wait.until(EC.visibility_of_element_located((By.XPATH, "//div[@class='css-1rynq56 r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41']")))
 
 print('Extra wait time')
 time.sleep(15)
 
+
 print('clicking advanced search box')
-advanced_search_box = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, '.css-1dbjc4n[data-testid="searchFiltersAdvancedSearch"]')))
+max_attempts = 3
+for attempt in range(max_attempts):
+    try:
+        advanced_search_box = wait.until(EC.element_to_be_clickable((By.XPATH, '//span[@class="css-1qaijid r-bcqeeo r-qvutc0 r-poiln3" and @style="text-overflow: unset;"]')))
+        break  # Exit the loop if element is found
+    except TimeoutException:
+        if attempt == max_attempts - 1:
+            raise  # Raise the TimeoutException on the last attempt
+        else:
+            print(f"Attempt {attempt + 1} failed. Retrying...")
+
 advanced_search_box.click()
 
 time.sleep(10)
@@ -111,6 +123,7 @@ time.sleep(10)
 print('clicking language box')
 language_box = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_1"]')))
 language_box.click()
+
 print('Choosing English')
 select = Select(language_box)
 select.select_by_index(11)
@@ -129,7 +142,7 @@ hashtags_box[0].send_keys('#BostonStrong')
 # select_from_month.select_by_index(3)   #select March?
 
 
-
+###################START HERE, MAKE THIS WORK? This is selecting the 'from day' dropdown
 print('dates from day')
 dates_from_day = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="SELECTOR_10"]')))
 print('1')
@@ -139,6 +152,8 @@ select_from_day = Select(dates_from_day)
 print('3')
 select_from_day.select_by_index(1)  #select 1st of the month
 print('4')
+
+
 
 ########### doesn't work
 # print('dates from year')
