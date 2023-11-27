@@ -101,16 +101,16 @@ latest_button.click()
 #scrolling down page
 print('scrolling to bottom of page. This might take a while...')
 
-##########START HERE. A FEW NOTES
-    #1. How to get content of all tweets after scrolling?
-    #2. How to scroll until I can't scroll any more? Or if I do a fixed number of scrolls, how to handle an error if it occurs
-scrolls = 10
+
+
+scrolls = 1100  # an attempt to get all tweets from this year between March 1 and June 1
 
 #this holds all info gathered from each tweet on the page
 final_results = []
 
 for scroll in range(scrolls):
-    print('scrolling')
+    print()
+    print(f'Scroll number {scroll + 1}')
     current_height = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
     print("Current height of page: ", current_height)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -238,6 +238,8 @@ for scroll in range(scrolls):
             
         if len(date_of_tweet) == 0:
             date_of_tweet = 'No Date'
+            
+        print(f'Total number of tweets gathered: {len(final_results)}')
         
         final_results.append([twitter_handle, username, date_of_tweet, content, image_links, video_links])
 
@@ -256,131 +258,6 @@ print('waiting for page to load')
 time.sleep(30)
 
 
-
-# #######STEP 3. GATHER HTML
-# print('extracting info from tweets')
-# html = driver.page_source
-
-# soup = BeautifulSoup(html, 'lxml')
-
-# all_tweets = soup.find_all('div', class_='css-175oi2r r-16y2uox r-1wbh5a2 r-1ny4l3l')
-
-# #this holds all info gathered from each tweet on the page
-# final_results = []
-
-# for tweet in all_tweets:
-    
-#     twitter_handle = ''
-#     username = ''
-#     date_of_tweet = []
-#     content = ''
-#     image_links = []
-#     video_links = []
-    
-#     # gets username, twitter handle, date of tweet
-#     first_nested_div = tweet.find('div', class_='css-175oi2r r-k4xj1c r-18u37iz r-1wtj0ep')
-#     if first_nested_div:
-#         # if these div tags are found
-#         for div in first_nested_div:
-            
-#             #extract text content of the div
-#             div_text = div.get_text()
-            
-#             #find and extract twitter handle
-#             for match in re.finditer(r'@(\w+)', div_text):
-#                 twitter_handle += match.group(0)
-                
-#             # Find and extract user's name
-#             for match in re.finditer(r'(?<!@)\b(?![A-Za-z]{3} \d{1,2}\b)\w+(?: \w+)+\b', div_text):
-#                 username += match.group(0)
-                
-#             # Find and extract date of tweet
-#             pattern = r'(?:[A-Z][a-z]{2} \d{1,2}|\d{1,2}h)'
-#             for match in re.finditer(pattern, div_text):
-#                 date_of_tweet = match.group(0)
-                
-#             for i, result in enumerate(date_of_tweet):
-#                 if re.match(pattern, result):
-#                     # Get the current date in the desired format "Nov 3"
-#                     current_date = datetime.now().strftime("%b %d")
-#                     current_date = current_date.replace(" 0", " ")  # Remove leading zero from the day
-#                     date_of_tweet[i] = current_date     
-
-#     else:
-#         # if these div tags are not found
-#         twitter_handle = 'No twitter handle'
-#         username = 'No Name'
-#         date_of_tweet = 'No Date'
-    
-    
-#     # gets content of tweet including hashtags
-#     second_nested_div = tweet.find('div', class_='css-1rynq56 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim')
-#     if second_nested_div:
-#         # if these div tags are found
-#         tweet_contents = []
-        
-#         for div in second_nested_div:
-#             for item in div:
-#                 # if contains span
-#                 if item.name == 'span':
-#                     tweet_contents.append(item.get_text())
-#                 # if contains a
-#                 elif item.name == 'a':
-#                     tweet_contents.append(item.get_text())
-#                 # if no other tag
-#                 else:
-#                     tweet_contents.append(item)
-                
-#         #flatten tweet_contents into one long string
-#         tweet_contents = ''.join(tweet_contents)
-#         content = tweet_contents
-        
-        
-#     else:
-#         # if these div tags are not found
-#         tweet_contents = 'No Tweet Contents'
-#         content = tweet_contents
-        
-        
-#     # gets content of other media. Can be 3 different things: an image, a retweet, a video
-#     # check for images first
-#     nested_imgs = tweet.find_all('img', class_="css-9pa8cd")
-#     if nested_imgs:
-#         for i in nested_imgs:
-#             # need to remove everything to the right of the "?" character
-#             src = i.get('src')
-#             src = src.split('?')[0]
-#             # check if last 4 characters of the string are .jpg aready
-#             if src[-4:] == '.jpg':
-#                 image_links.append(src)
-#             elif src[-5:] == '.jpeg':
-#                 image_links.append(src)
-#             else:
-#                 src = src + '.jpg'    # add .jpg to end to complete string
-#                 image_links.append(src)
-#     else:
-#         image_links.append('No Images')
-    
-    
-        
-#     # videos    
-#     nested_media = tweet.find_all('video')
-#     if nested_media:
-#         for i in nested_media:
-#             poster_img = i.get('poster')
-#             video_links.append(poster_img)
-#     else:
-#         video_links.append('No Video')
-        
-    
-#     # handle missing or empty data such as username, date of tweet, or content
-#     if len(username) == 0:
-#         username = 'No Name'
-        
-#     if len(date_of_tweet) == 0:
-#         date_of_tweet = 'No Date'
-    
-#     final_results.append([twitter_handle, username, date_of_tweet, content, image_links, video_links])
 
 
 
