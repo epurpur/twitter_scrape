@@ -104,7 +104,7 @@ print('scrolling to bottom of page. This might take a while...')
 ##########START HERE. A FEW NOTES
     #1. How to get content of all tweets after scrolling?
     #2. How to scroll until I can't scroll any more? Or if I do a fixed number of scrolls, how to handle an error if it occurs
-scrolls = 3
+scrolls = 10
 
 for scroll in range(scrolls):
     print('scrolling')
@@ -112,6 +112,13 @@ for scroll in range(scrolls):
     print("Current height of page: ", current_height)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(10)
+    
+    # Check if the "Reply" button is present
+    retry_button = driver.find_elements_by_xpath("//span[contains(text(), 'Retry')]")
+    
+    if retry_button:
+        print("Found 'Reply' button, clicking...")
+        retry_button[0].click()
     
 
 
@@ -245,11 +252,16 @@ for tweet in all_tweets:
     
     final_results.append([twitter_handle, username, date_of_tweet, content, image_links, video_links])
 
-    print()
-    print('~~~~~~~~~~~~~~~~~')
-    print()
 
-    
+
+#######STEP 4. Assemble Results into Dataframe
+print(f'Collected data from {len(final_results)} tweets')
+print('Creating final DataFrame with results')
+# Define column names
+columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoUrls']
+
+# Create a DataFrame
+df = pd.DataFrame(final_results, columns=columns)
     
 
 
