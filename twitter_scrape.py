@@ -86,7 +86,9 @@ print('clicking search bar')
 search_box = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search']")))
 search_box.click()
 print('Sending search terms keys')
-search_box.send_keys('(#BostonStrong) lang:en until:2023-06-01 since:2023-03-01')
+
+##CHANGE THE DATES AND YEAR HERE
+search_box.send_keys('(#BostonStrong) lang:en until:2021-06-01 since:2021-03-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
@@ -103,7 +105,7 @@ print('scrolling to bottom of page. This might take a while...')
 
 
 
-scrolls = 1100  # an attempt to get all tweets from this year between March 1 and June 1
+scrolls = 500  # an attempt to get all tweets from this year between March 1 and June 1
 
 #this holds all info gathered from each tweet on the page
 final_results = []
