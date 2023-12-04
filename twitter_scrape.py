@@ -88,7 +88,7 @@ search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2018-03-29 since:2018-03-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2016-04-18 since:2016-03-01') #####START HERE WITH 4/29
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
