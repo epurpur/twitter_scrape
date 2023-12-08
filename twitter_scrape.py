@@ -88,7 +88,7 @@ search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2014-04-07 since:2014-03-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2013-12-31 since:2013-01-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
@@ -105,7 +105,7 @@ print('scrolling to bottom of page. This might take a while...')
 
 
 
-scrolls = 500  # an attempt to get all tweets from this year between March 1 and June 1
+scrolls = 5000  # an attempt to get all tweets from this year between March 1 and June 1
 
 #this holds all info gathered from each tweet on the page
 final_results = []
