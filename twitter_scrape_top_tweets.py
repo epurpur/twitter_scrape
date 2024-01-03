@@ -88,17 +88,18 @@ search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2023-06-01 since:2023-03-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2013-12-31 since:2013-01-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
-print('click latest button')
-latest_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Latest"]')))
+#DON'T CLICK THE LATEST BUTTON! I want top tweets only
+print('click Top button')
+top_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//span[text()="Top"]')))
 # Scroll into view
 print('scrolling into view')
-driver.execute_script("arguments[0].scrollIntoView(true);", latest_button)
+driver.execute_script("arguments[0].scrollIntoView(true);", top_button)
 # Click on the element
-latest_button.click()
+top_button.click()
 
 #scrolling down page
 print('scrolling to bottom of page. This might take a while...')
@@ -284,6 +285,8 @@ df = pd.DataFrame(final_results, columns=columns)
 
 # exit web driver
 # driver.quit()
+
+
 
 
 
