@@ -30,7 +30,7 @@ wait = WebDriverWait(driver, 60)    # determines maximum wait time for an elemen
 driver.get('https://twitter.com/i/flow/login')
 
 print('webpage accessed')
-time.sleep(15)
+time.sleep(25)
 
 
 #read .env file environment variables
@@ -39,16 +39,20 @@ email = os.getenv("email")
 password = os.getenv("password")
 phoneNumber = os.getenv("phoneNumber")
 
+print(email, password, phoneNumber)
+
 print('writing email')
-login = driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input')
-# time.sleep(2)
+
+login = driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[4]/label/div/div[2]/div/input')# login = driver.find_element_by_xpath('//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/div[5]/label/div/div[2]/div/input')
+time.sleep(2)
 login.click()
 login.send_keys(email)
 
 #click next button
 print('finding next')
-wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='button'][contains(.,'Next')]"))).click()
-# next_button = driver.find_element(By.XPATH, '//*[@id="react-root"]/div/div/div/main/div/div/div/div[2]/div[2]/div/div[7]/div')
+wait = WebDriverWait(driver, 10)  # You can adjust the timeout duration if needed
+next_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="layers"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div/div/div/button[2]/div')))
+next_button.click()
 time.sleep(10)
 
 #Might get either just the password box or another box that says 'there has been unusual activity'
@@ -81,14 +85,24 @@ print()
 
 ######STEP 2. SEARCH
 
-time.sleep(5)
+# click on "x" for security box if needed
+try:
+    print("clicking security X")
+    wait = WebDriverWait(driver, 10)
+    x_button = wait.until(EC.element_to_be_clickable(By.XPATH, '//*[@id="layers"]/div[2]/div/div/div/div/div/div[2]/div[2]/div/div[1]/div/div/div/div[1]/button/div/svg'))
+    x_button.click()
+except Exception:
+    pass
+
+
+time.sleep(100)
 print('clicking search bar')
 search_box = wait.until(EC.element_to_be_clickable((By.XPATH, "//input[@placeholder='Search']")))
 search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2023-06-01 since:2023-03-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2023-03-01 since:2023-01-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
@@ -263,14 +277,14 @@ time.sleep(30)
 
 
 
-#######STEP 4. Assemble Results into Dataframe
-print(f'Collected data from {len(final_results)} tweets')
-print('Creating final DataFrame with results')
-# Define column names
-columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoUrls']
+# #######STEP 4. Assemble Results into Dataframe
+# print(f'Collected data from {len(final_results)} tweets')
+# print('Creating final DataFrame with results')
+# # Define column names
+# columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoUrls']
 
-# Create a DataFrame
-df = pd.DataFrame(final_results, columns=columns)
+# # Create a DataFrame
+# df = pd.DataFrame(final_results, columns=columns)
     
 
 
