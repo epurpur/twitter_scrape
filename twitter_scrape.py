@@ -102,7 +102,7 @@ search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2023-03-01 since:2023-01-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2024-01-01 since:2023-06-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
@@ -287,7 +287,7 @@ columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoU
 df = pd.DataFrame(final_results, columns=columns)
     
 # Save Dataframe
-# df.to_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2023_early.csv')
+df.to_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2023_early.csv')
 
 
 
