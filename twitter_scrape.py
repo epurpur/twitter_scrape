@@ -277,16 +277,17 @@ time.sleep(30)
 
 
 
-# #######STEP 4. Assemble Results into Dataframe
-# print(f'Collected data from {len(final_results)} tweets')
-# print('Creating final DataFrame with results')
-# # Define column names
-# columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoUrls']
+#######STEP 4. Assemble Results into Dataframe
+print(f'Collected data from {len(final_results)} tweets')
+print('Creating final DataFrame with results')
+# Define column names
+columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoUrls']
 
-# # Create a DataFrame
-# df = pd.DataFrame(final_results, columns=columns)
+# Create a DataFrame
+df = pd.DataFrame(final_results, columns=columns)
     
-
+# Save Dataframe
+# df.to_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2023_early.csv')
 
 
 
