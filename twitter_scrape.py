@@ -30,7 +30,7 @@ wait = WebDriverWait(driver, 60)    # determines maximum wait time for an elemen
 driver.get('https://twitter.com/i/flow/login')
 
 print('webpage accessed')
-time.sleep(25)
+time.sleep(30)
 
 
 #read .env file environment variables
@@ -102,7 +102,7 @@ search_box.click()
 print('Sending search terms keys')
 
 ##CHANGE THE DATES AND YEAR HERE
-search_box.send_keys('(#BostonStrong) lang:en until:2024-01-01 since:2023-06-01')
+search_box.send_keys('(#BostonStrong) lang:en until:2022-03-01 since:2022-01-01')
 print('press enter key')
 search_box.send_keys(Keys.RETURN)
 
@@ -189,7 +189,8 @@ for scroll in range(scrolls):
         
         
         # gets content of tweet including hashtags
-        second_nested_div = tweet.find('div', class_='css-1rynq56 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim')
+        second_nested_div = tweet.find('div', class_='css-146c3p1 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-1ttztb7 r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim')
+        # second_nested_div = tweet.find('div', class_='css-1rynq56 r-8akbws r-krxsd3 r-dnmrzs r-1udh08x r-bcqeeo r-qvutc0 r-37j5jr r-a023e6 r-rjixqe r-16dba41 r-bnwqim')
         if second_nested_div:
             # if these div tags are found
             tweet_contents = []
@@ -257,6 +258,8 @@ for scroll in range(scrolls):
             
         print(f'Total number of tweets gathered: {len(final_results)}')
         
+        print(content)
+        
         final_results.append([twitter_handle, username, date_of_tweet, content, image_links, video_links])
 
     
@@ -287,7 +290,7 @@ columns = ['TwitterHandle', 'Name', 'Date', 'TweetContent', 'ImageUrls', 'VideoU
 df = pd.DataFrame(final_results, columns=columns)
     
 # Save Dataframe
-df.to_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2023_early.csv')
+df.to_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2022_early.csv')
 
 
 

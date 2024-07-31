@@ -4,7 +4,7 @@
 import pandas as pd
 
 # Read the CSV file into a DataFrame
-df = pd.read_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2023_late.csv')
+df = pd.read_csv('/Users/ep9k/Desktop/twitter_scrape/Data/2020_early.csv')
 
 #drop "Unnamed:0" column
 df = df.drop(columns=['Unnamed: 0'])
@@ -22,4 +22,4 @@ df = df.drop_duplicates()
 
 
 # Overwrite the CSV file with the updated DataFrame
-df.to_csv('/Users/ep9k/Desktop/twitter_scrape/DataClean/2023_late.csv', index=False)
+df.to_csv('/Users/ep9k/Desktop/twitter_scrape/DataClean/2020_early.csv', index=False)
